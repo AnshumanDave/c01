@@ -39,7 +39,7 @@ while cap.isOpened():
             # Draw red circle on the index fingertip
             cv2.circle(frame, index_tip, 10, (0, 0, 255), -1)
 
-            # Calculate Euclidean distance between thumb and index finger
+            # Calculate distance between thumb and index finger
             distance = np.linalg.norm(np.array(index_tip) - np.array(thumb_tip))
 
             # Print pinching status
