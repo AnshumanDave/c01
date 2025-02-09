@@ -1,0 +1,54 @@
+import numpy as np
+import cv2
+
+def load_camera_params(intrinsic, distortion):
+    """
+    Load and validate intrinsic matrix and distortion coefficients.
+    """
+    K = np.array(intrinsic).reshape(3, 3)
+    dist = np.array(distortion)
+    
+    # Validate intrinsic matrix
+    if K.shape != (3, 3):
+        raise ValueError("Invalid intrinsic matrix shape")
+    if not np.isclose(K[2, 2], 1.0):
+        raise ValueError("Bottom-right element of intrinsic matrix must be 1")
+    
+    # Validate distortion coefficients
+    if dist.shape != (5,):
+        raise ValueError("Distortion coefficients must be a 5-element vector")
+    
+    return K, dist
+
+def main():
+    # Camera 0 Parameters
+    intrinsic_c0 = [
+        926.0774422800577, 0.0, 356.0891925607645,
+        0.0, 925.7752194392244, 355.24923198531565,
+        0.0, 0.0, 1.0
+    ]
+    distortion_c0 = [-0.013959821820868506, 1.4192899312188747, -0.003533980225025572, -0.0035674091977424003, -6.394324137393883]
+    
+    # Camera 1 Parameters
+    intrinsic_c1 = [
+        924.2268282075077, 0.0, 351.0497031729769,
+        0.0, 923.3925409069645, 359.2081641373512,
+        0.0, 0.0, 1.0
+    ]
+    distortion_c1 = [-0.02625845479072236, 1.4625979449800532, -0.0014035189373399156, -0.004337224796784845, -6.044993682556749]
+    
+    # Validate camera parameters
+    K0, dist0 = load_camera_params(intrinsic_c0, distortion_c0)
+    K1, dist1 = load_camera_params(intrinsic_c1, distortion_c1)
+    
+    print("Camera 0 Intrinsic Matrix:\n", K0)
+    print("Camera 0 Distortion Coefficients:\n", dist0)
+    print("Camera 1 Intrinsic Matrix:\n", K1)
+    print("Camera 1 Distortion Coefficients:\n", dist1)
+    
+    # Optional: Further validation (e.g., determinant check, focal length range)
+    print("Determinant of K0:", np.linalg.det(K0))
+    print("Determinant of K1:", np.linalg.det(K1))
+    
+if __name__ == "__main__":
+    main()
